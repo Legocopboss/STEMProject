@@ -1,7 +1,7 @@
-import unittest
 from tkinter import *
 
 from database import *
+from functionLibrary import *
 
 # def run():
 root = Tk()
@@ -20,9 +20,7 @@ error_login_frame.pack(expand=1, fill=BOTH)
 # exec(open("./database.py").read())
 
 
-def clear_frame(frame):
-    for widgets in frame.winfo_children():
-        widgets.destroy()
+
 
 
 def login():
@@ -58,15 +56,10 @@ def login():
                       text=f"Welcome {printInfo(idNumber, 2)}. You have a balance of {printInfo(idNumber, 3)} Bollars").pack()
 
 
-def checkNull():
-    with unittest.TestCase.assertRaises(EXCEPTION):
-        mystring.get()
-
-
 def adminLogin():
-    clear_frame(welcome_frame)
+    clear_frame(first_frame)
+    root.destroy()
     exec(open("./loginUI.py").read())
-
 
 mystring = StringVar()
 

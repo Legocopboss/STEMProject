@@ -33,13 +33,10 @@ cursor = connection.cursor()
 def printInfo(idNumber, opt):
     cursor.execute(f"""SELECT * FROM accountsDB WHERE ID='{idNumber}';""")
     resP = cursor.fetchall()
-    all = resP[0]
-    name = (resP[0])[1]
-    balance = (resP[0])[2]
     switch = {
-        1: all,
-        2: name,
-        3: balance,
+        1: resP[0],
+        2: (resP[0])[1],
+        3: (resP[0])[2],
     }
     return switch.get(opt, None)
 
@@ -55,3 +52,34 @@ def newPerson(idNumber, name):
     balance = random.randrange(25, 751)
     cursor.execute(f"""INSERT INTO accountsDB VALUES ('{idNumber}', '{name}', '{balance}');""")
     connection.commit()
+
+
+#
+#   ADMIN LOGIN THINGS
+#
+
+
+def admFetchInfo(user, passw, opt):
+    cursor.execute(f"""SELECT * FROM adminAccsDB WHERE Username='{user}' and Password='{passw}';""")
+    res = cursor.fetchall()
+    if not res:
+        return None
+    else:
+        switch = {
+            1: (res[0])[0],  # name
+            2: ((res[0])[3], (res[0])[4]),  # adminTF & managerTF
+        }
+        return switch.get(opt, res[0])
+
+
+def admCheckLogin(user, passw):
+    res = admFetchInfo(user, passw, 5)
+    if not res:
+        return "Invalid Login"
+    else:
+        if res[1] and res[2]:
+            return "Success Admin & Manager Login"
+        if res[1] and not res[2]:
+            return "Success Admin Login"
+        if res[2] and not res[1]:
+            return "Success Manager Login"
