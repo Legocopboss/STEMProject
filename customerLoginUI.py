@@ -2,8 +2,8 @@ from tkinter import *
 
 from database import *
 from functionLibrary import *
+from loginUI import LoginfirstFrame
 
-# def run():
 root = Tk()
 root.geometry("400x400")
 root.resizable(True, True)
@@ -58,8 +58,8 @@ def login():
 
 def adminLogin():
     clear_frame(first_frame)
-    root.destroy()
-    exec(open("./loginUI.py").read())
+    # root.destroy()
+    LoginfirstFrame()
 
 mystring = StringVar()
 

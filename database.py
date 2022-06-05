@@ -55,7 +55,7 @@ def newPerson(idNumber, name):
 
 
 #
-#   ADMIN LOGIN THINGS
+#   ADMIN THINGS
 #
 
 
@@ -75,11 +75,30 @@ def admFetchInfo(user, passw, opt):
 def admCheckLogin(user, passw):
     res = admFetchInfo(user, passw, 5)
     if not res:
-        return "Invalid Login"
+        return False, False
     else:
-        if res[1] and res[2]:
-            return "Success Admin & Manager Login"
-        if res[1] and not res[2]:
-            return "Success Admin Login"
-        if res[2] and not res[1]:
-            return "Success Manager Login"
+        if res[1]:
+            return True, True
+        if res[2]:
+            return False, True
+
+
+def viewTable(adm):  # adm is true then show admin table if false show accounts
+    if adm:
+        print("Admin list print")
+        cursor.execute(f"""SELECT * FROM adminAccsDB;""")
+    else:
+        print("Accounts list print")
+        cursor.execute(f"""SELECT * FROM accountsDB;""")
+    viewT = cursor.fetchall()
+    return viewT
+
+
+def deleteUser(idNumbers):
+    ct = 0
+    removeIds = idNumbers.split(",")
+    for rr in removeIds:
+        cursor.execute(f"""DELETE FROM accountsDB WHERE ID='{rr}';""")
+        ct += 1
+    connection.commit()
+    return f"Successfully removed '{ct}' users from database"
