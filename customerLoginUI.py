@@ -6,15 +6,18 @@ from database import *
 # def run():
 root = Tk()
 root.geometry("400x400")
+root.resizable(True, True)
 
 first_frame = Frame(root)
-first_frame.pack()
-welcome_frame = Frame(root)
-welcome_frame.pack()
-error_login_frame = Frame(root)
-error_login_frame.pack()
+first_frame.pack(expand=1, fill=BOTH)
 
-exec(open("./database.py").read())
+welcome_frame = Frame(root)
+welcome_frame.pack(expand=1, fill=BOTH)
+error_login_frame = Frame(root)
+error_login_frame.pack(expand=1, fill=BOTH)
+
+
+# exec(open("./database.py").read())
 
 
 def clear_frame(frame):
@@ -60,6 +63,11 @@ def checkNull():
         mystring.get()
 
 
+def adminLogin():
+    clear_frame(welcome_frame)
+    exec(open("./loginUI.py").read())
+
+
 mystring = StringVar()
 
 id_label = Label(first_frame, text="Scan ID:").pack()
@@ -68,5 +76,10 @@ id_entry.pack()
 id_entry.focus()
 # root.bind("<Return>", login)
 loginButton = Button(first_frame, text="Login", bg="grey", command=login).pack()
+
+adminLoginButton = Button(first_frame, text="Admin Login", bg="pink", command=adminLogin)
+adminLoginButton.pack()
+adminLoginButton.place(bordermode=OUTSIDE, height=30, width=90, x=-0.1, y=-0.1)
+# would prefer for admin button to be botton right/left but fuck formatting
 
 root.mainloop()
