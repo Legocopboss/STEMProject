@@ -1,5 +1,5 @@
 # SQL Connection and stuff
-
+import datetime
 import random
 
 import mysql.connector
@@ -36,9 +36,9 @@ def printInfo(idNumber, opt):
     cursor.execute(f"""SELECT * FROM accountsDB WHERE ID='{idNumber}';""")
     resP = cursor.fetchall()
     switch = {
-        1: resP[0],
-        2: (resP[0])[1],
-        3: (resP[0])[2],
+        1: resP[0],  # all
+        2: (resP[0])[1],  # name
+        3: (resP[0])[2],  # balance
     }
     return switch.get(opt, None)
 
@@ -114,3 +114,12 @@ def allItems():
     cursor.execute(f"""SELECT * FROM itemsDB;""")
     listL = cursor.fetchall()
     return listL
+
+
+def newTransaction(IDNumber, purchases, name, balance, total):
+    ct = datetime.datetime.now()
+    print(ct)
+
+    cursor.execute(
+        f"""INSERT INTO transactionsDB VALUES ('none', '{name}', '{IDNumber}', '{purchases}', '{total}', '{(balance - total)}', '{ct}');""")
+    connection.commit()

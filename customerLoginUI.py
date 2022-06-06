@@ -3,6 +3,7 @@ from tkinter import *
 from database import *
 from functionLibrary import *
 from loginUI import LoginfirstFrame
+from posUI import posUIDEF
 
 root = Tk()
 root.geometry("400x400")
@@ -38,6 +39,7 @@ def login():
         clear_frame(error_login_frame)
         label = Label(welcome_frame,
                       text=f"Welcome {printInfo(idNumber, 2)}. You have a balance of {printInfo(idNumber, 3)} B").pack()
+        Button(welcome_frame, text="Return to login", bg="pink", command=backToLogin).pack()
 
     inputStr = StringVar()
 
@@ -52,7 +54,7 @@ def login():
         input_entry.focus()
         ConfirmButton = Button(error_login_frame, text="Confirm", bg="grey", command=newP).pack()
     else:
-        # send to posUI
+        posUIDEF(idNumber)
         label = Label(welcome_frame,
                       text=f"Welcome {printInfo(idNumber, 2)}. You have a balance of {printInfo(idNumber, 3)} Bollars").pack()
 
@@ -61,6 +63,13 @@ def adminLogin():
     clear_frame(first_frame)
     # root.destroy()
     LoginfirstFrame()
+
+
+def backToLogin():
+    clear_frame(welcome_frame)
+    exec(open("./customerLoginUI.py").read())
+    root.destroy()
+
 
 mystring = StringVar()
 
