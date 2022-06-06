@@ -34,7 +34,7 @@ def remButton(bN):
 
 
 def charge(cA):
-    rTotal += cA
+    None
 
 
 r = 0

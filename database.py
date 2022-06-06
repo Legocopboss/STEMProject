@@ -27,7 +27,9 @@ connection = db_connection("na02-db.cus.mc-panel.net", "db_441655", "edda40894a"
 cursor = connection.cursor()
 
 
-# run()
+#
+#   USER THINGS
+#
 
 
 def printInfo(idNumber, opt):
@@ -102,3 +104,7 @@ def deleteUser(idNumbers):
         ct += 1
     connection.commit()
     return f"Successfully removed '{ct}' users from database"
+
+#
+#   PURCHASE THINGS
+#

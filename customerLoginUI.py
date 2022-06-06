@@ -52,6 +52,7 @@ def login():
         input_entry.focus()
         ConfirmButton = Button(error_login_frame, text="Confirm", bg="grey", command=newP).pack()
     else:
+        # send to posUI
         label = Label(welcome_frame,
                       text=f"Welcome {printInfo(idNumber, 2)}. You have a balance of {printInfo(idNumber, 3)} Bollars").pack()
 
