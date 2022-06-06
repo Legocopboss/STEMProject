@@ -105,6 +105,12 @@ def deleteUser(idNumbers):
     connection.commit()
     return f"Successfully removed '{ct}' users from database"
 
+
 #
 #   PURCHASE THINGS
 #
+
+def allItems():
+    cursor.execute(f"""SELECT * FROM itemsDB;""")
+    listL = cursor.fetchall()
+    return listL

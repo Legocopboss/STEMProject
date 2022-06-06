@@ -1,10 +1,14 @@
 from tkinter import *
 
+from database import *
+
 root = Tk()
 root.geometry("400x400")
 
+first_frame = Frame(root)
+first_frame.pack(expand=1, fill=BOTH)
 
-# code in here
+
 class button:
     def __init__(self, name, price):
         self.name = name
@@ -26,25 +30,17 @@ rTotal = 0
 
 
 def newButton(bN, cA):
-    bList.append(button(bN, cA))
-
-
-def remButton(bN):
-    bList.remove(button(bN))
-
-
-def charge(cA):
     None
 
 
-r = 0
-c = 0
-for b in range(len(bList)):
-    bList[b] = Button(root, command=charge(b.getPrice), text=b.getName).grid(row=r, column=c).pack()
-    if c == 5:
-        c = 0
-        r += 1
-    else:
-        c += 1
+def remButton(bN):
+    None
+
+
+items = allItems()
+
+x = 0
+for li in items:
+    Button(first_frame, text=f"{li[0]}\n{li[1]}", command=None).grid(row=2, column=x)
 
 root.mainloop()
