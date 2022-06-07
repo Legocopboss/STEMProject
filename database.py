@@ -35,12 +35,15 @@ cursor = connection.cursor()
 def printInfo(idNumber, opt):
     cursor.execute(f"""SELECT * FROM accountsDB WHERE ID='{idNumber}';""")
     resP = cursor.fetchall()
-    switch = {
-        1: resP[0],  # all
-        2: (resP[0])[1],  # name
-        3: (resP[0])[2],  # balance
-    }
-    return switch.get(opt, None)
+    if not resP:
+        return "Error"
+    else:
+        switch = {
+            1: resP[0],  # all
+            2: (resP[0])[1],  # name
+            3: (resP[0])[2],  # balance
+        }
+        return switch.get(opt, None)
 
 
 def checkLogin(idNumber):
@@ -110,16 +113,38 @@ def deleteUser(idNumbers):
 #   PURCHASE THINGS
 #
 
-def allItems():
+def allItems():  # THIS IS FOR THE PURCHASE BUTTONS
     cursor.execute(f"""SELECT * FROM itemsDB;""")
     listL = cursor.fetchall()
     return listL
 
 
-def newTransaction(IDNumber, purchases, name, balance, total):
+def newTransaction(IDNumber, purchases, total):
     ct = datetime.datetime.now()
     print(ct)
+    name = printInfo(IDNumber, 2)
+    balance = printInfo(IDNumber, 3)
 
     cursor.execute(
         f"""INSERT INTO transactionsDB VALUES ('none', '{name}', '{IDNumber}', '{purchases}', '{total}', '{(balance - total)}', '{ct}');""")
     connection.commit()
+    cursor.execute(f"""UPDATE accountsDB SET Balance = Balance+{total} WHERE ID='{IDNumber}';""")
+
+
+def newTransaction_WithDepos(IDNumber, amount):
+    ct = datetime.datetime.now()
+    print(ct)
+    name = printInfo(IDNumber, 2)
+    balance = printInfo(IDNumber, 3)
+
+    cursor.execute(
+        f"""INSERT INTO transactionsDB VALUES ('none', '{name}', '{IDNumber}', 'WITHDRAWL/DEPOSIT', '{amount}', '{(balance - amount)}', '{ct}');""")
+    connection.commit()
+    cursor.execute(f"""UPDATE accountsDB SET Balance = Balance+{amount} WHERE ID='{IDNumber}';""")
+    return f"Successfully updated the balance of {name} to {printInfo(IDNumber, 3)}"
+
+
+def transactionLog():
+    cursor.execute(f"""SELECT * FROM transactionsDB;""")
+    transL = cursor.fetchall()
+    return transL

@@ -36,6 +36,8 @@ def LoginfirstFrame():
             else:
                 clear_frame(first_frame)
                 # exec(open("./managerUI.py").read())
+        else:
+            exec(open("./customerLoginUI.py").read())
 
         # if u or p == "":
         #    error_label = Label(root, text="One or more fields is incorrect.").pack()

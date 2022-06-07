@@ -41,10 +41,8 @@ def posUIDEF(idnum):
     def confirmPurchase():
         purchasesT = sorted(currentTrans, key=lambda z: z[1], reverse=TRUE)
         purchases = str(purchasesT).replace('\'', '')
-        name = printInfo(idnum, 2)
-        balance = printInfo(idnum, 3)
         print(purchases)
-        newTransaction(idnum, purchases, name, balance, posUIDEF.currtotal)
+        newTransaction(idnum, purchases, -posUIDEF.currtotal)
         clear_frame(trans_frame)
         clear_frame(first_frame)
         exec(open("./customerLoginUI.py").read())
