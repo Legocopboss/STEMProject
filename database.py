@@ -46,6 +46,22 @@ def printInfo(idNumber, opt):
         return switch.get(opt, None)
 
 
+def findByName(name, opt):
+    # opt: 1= if they exist return true
+    #   opt: 2= show all that exist
+    cursor.execute(f"""SELECT * FROM `accountsDB` WHERE Name = '{name}';""")
+    resN = cursor.fetchall()
+    if opt == 1:
+        if not resN:
+            return False
+        else:
+            return True
+    elif opt == 2:
+        return resN
+    else:
+        return None
+
+
 def checkLogin(idNumber):
     print("Id number is being checked in database")
     cursor.execute(f"""SELECT * FROM accountsDB WHERE ID='{idNumber}';""")
@@ -109,6 +125,13 @@ def deleteUser(idNumbers):
     return f"Successfully removed '{ct}' users from database"
 
 
+def changeUserName(idnumber, newName):
+    oldName = printInfo(idnumber, 2)
+    cursor.execute(f"""UPDATE accountsDB SET Name = '{newName}' WHERE ID='{idnumber}';""")
+    connection.commit()
+    return f"Successfully changed {oldName} to {newName}"
+
+
 #
 #   PURCHASE THINGS
 #
@@ -117,6 +140,68 @@ def allItems():  # THIS IS FOR THE PURCHASE BUTTONS
     cursor.execute(f"""SELECT * FROM itemsDB;""")
     listL = cursor.fetchall()
     return listL
+
+
+def printItemInfo(idNumber, opt):
+    cursor.execute(f"""SELECT * FROM itemsDB WHERE ID='{idNumber}';""")
+    resP = cursor.fetchall()
+    if not resP:
+        return "Error"
+    else:
+        switch = {
+            1: resP[0],  # all
+            2: (resP[0])[1],  # name
+            3: (resP[0])[2],  # price
+        }
+        return switch.get(opt, None)
+
+
+def checkName(name, opt):
+    # opt 1=return true if they exist
+    # opt 2 = return all that have the name
+    cursor.execute(f"""SELECT * FROM itemsDB WHERE Item = '{name}';""")
+    resN = cursor.fetchall()
+    if opt == 1:
+        if not resN:
+            return False
+        else:
+            return True
+    elif opt == 2:
+        return resN
+    else:
+        return None
+
+
+def checkItemID(id):
+    cursor.execute(f"""SELECT * FROM itemsDB WHERE ID='{id}';""")
+    resn = cursor.fetchall()
+    if not resn:
+        return False
+    else:
+        return True
+
+
+def changeItem(id, name, price, edit):  # leave the other as None for edit
+    if id is None:  # add item
+        cursor.execute(f"""INSERT INTO itemsDB(`Item`, `Price`) VALUES ('{name}','{price}');""")
+        return f"Successfully added item: {name} for price of {price}"
+    elif edit and (name or price) is not None:  # edit item
+        if name is None:  # edit price
+            cursor.execute(f"""UPDATE itemsDB SET `Price`= '{price}' WHERE ID = '{id}';""")
+            return f"Successfully edited the price of {printInfo(id, 2)} to {price}"
+        elif price is None:  # edit name
+            cursor.execute(f"""UPDATE itemsDB SET `Item`= '{name}' WHERE ID = '{id}';""")
+            return f"Successfully edited the name of {printInfo(id, 3)} to {name}"
+    else:  # remove item
+        ct = 0
+        removeIds = id.split(",")
+        for rr in removeIds:
+            cursor.execute(f"""DELETE FROM itemsDB WHERE ID='{rr}';""")
+            ct += 1
+        connection.commit()
+        return f"Successfully removed '{ct}' users from database"
+
+    connection.commit()
 
 
 def newTransaction(IDNumber, purchases, total):
@@ -129,6 +214,7 @@ def newTransaction(IDNumber, purchases, total):
         f"""INSERT INTO transactionsDB VALUES ('none', '{name}', '{IDNumber}', '{purchases}', '{total}', '{(balance - total)}', '{ct}');""")
     connection.commit()
     cursor.execute(f"""UPDATE accountsDB SET Balance = Balance+{total} WHERE ID='{IDNumber}';""")
+    connection.commit()
 
 
 def newTransaction_WithDepos(IDNumber, amount):
@@ -136,11 +222,12 @@ def newTransaction_WithDepos(IDNumber, amount):
     print(ct)
     name = printInfo(IDNumber, 2)
     balance = printInfo(IDNumber, 3)
-
+    # print(balance)
     cursor.execute(
-        f"""INSERT INTO transactionsDB VALUES ('none', '{name}', '{IDNumber}', 'WITHDRAWL/DEPOSIT', '{amount}', '{(balance - amount)}', '{ct}');""")
+        f"""INSERT INTO transactionsDB VALUES ('none', '{name}', '{IDNumber}', 'WITHDRAWL/DEPOSIT', '{amount}', '{(balance + amount)}', '{ct}');""")
     connection.commit()
     cursor.execute(f"""UPDATE accountsDB SET Balance = Balance+{amount} WHERE ID='{IDNumber}';""")
+    connection.commit()
     return f"Successfully updated the balance of {name} to {printInfo(IDNumber, 3)}"
 
 

@@ -1,11 +1,11 @@
 from tkinter import *
 
-from database import *
 from functionLibrary import *
 
 
 def posUIDEF(idnum):
     root = Tk()
+    root.title("Store UI")
     root.geometry("400x400")
 
     first_frame = Frame(root)

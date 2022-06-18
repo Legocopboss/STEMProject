@@ -1,11 +1,11 @@
 from tkinter import *
 
-from database import *
 from functionLibrary import *
 from loginUI import LoginfirstFrame
 from posUI import posUIDEF
 
 root = Tk()
+root.title("Customer Login")
 root.geometry("400x400")
 root.resizable(True, True)
 
