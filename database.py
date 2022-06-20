@@ -182,16 +182,17 @@ def checkItemID(id):
 
 
 def changeItem(id, name, price, edit):  # leave the other as None for edit
+    print(f"{id}\n{name}\n{price}\n{edit}")
     if id is None:  # add item
         cursor.execute(f"""INSERT INTO itemsDB(`Item`, `Price`) VALUES ('{name}','{price}');""")
         return f"Successfully added item: {name} for price of {price}"
-    elif edit and (name or price) is not None:  # edit item
+    elif edit and (name is not None or price is not None):  # edit item
         if name is None:  # edit price
             cursor.execute(f"""UPDATE itemsDB SET `Price`= '{price}' WHERE ID = '{id}';""")
-            return f"Successfully edited the price of {printInfo(id, 2)} to {price}"
+            return f"Successfully edited the price of {printItemInfo(id, 2)} to {price}"
         elif price is None:  # edit name
             cursor.execute(f"""UPDATE itemsDB SET `Item`= '{name}' WHERE ID = '{id}';""")
-            return f"Successfully edited the name of {printInfo(id, 3)} to {name}"
+            return f"Successfully edited the name of {printItemInfo(id, 3)} to {name}"
     else:  # remove item
         ct = 0
         removeIds = id.split(",")

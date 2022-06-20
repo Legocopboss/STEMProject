@@ -206,6 +206,7 @@ def adminUIDEF():
             Label(list_frame, text=li[1]).grid(row=x, column=2)
             Label(list_frame, text=li[2]).grid(row=x, column=3)
             x = x + 1
+        Button(list_frame, text="Back", bg="pink", command=back).grid(row=x + 1, column=1)
 
     def editMerch():
         clear_frame(first_frame)
@@ -218,124 +219,71 @@ def adminUIDEF():
         listZeItems()
 
         def addItem():
-            nameVar = StringVar()
             priceVar = StringVar()
-
+            print("adding item")
             clear_frame(edit_frame)
 
-            def newItem():  # validate price is a number, make sure the name isnt already a thing, send it
-                clear_frame(edit_frame)
-                # price = priceVar.get()
-                # name = nameVar.get()
-                print(priceVar.get() + nameVar.get())
-                if priceVar.get().isdigit():
-                    if checkName(nameVar.get(), 1) is False:  # that item does not exist
-                        text = changeItem(None, nameVar.get(), int(priceVar.get()), False)
-                        Label(edit_frame, text=text).grid(row=1, column=1)
-                        listZeItems()
-                    else:
-                        root.bell()
-                        messagebox.showerror("ERROR", "That Item already exists\nTry editing the item instead")
-                        addItem()
-                else:
-                    root.bell()
-                    messagebox.showerror("ERROR", "Price cannot be compounded into a valid number")
-                    addItem()
+            def newItem():
+                print("new item called")
+                pricehere = priceVar.get()
+                print(pricehere)
+
+            # nameVar = StringVar()
 
             Label(edit_frame, text="New Item: ", font='Helvetica 10 bold').grid(row=2, column=1)
-            Label(edit_frame, text="Name: ").grid(row=3, column=1)
-            Entry(edit_frame, textvariable=nameVar).grid(row=3, column=2)
+            # Label(edit_frame, text="Name: ").grid(row=3, column=1)
+            # Entry(edit_frame, textvariable=nameVar).grid(row=3, column=2)
             Label(edit_frame, text="Price: ").grid(row=4, column=1)
             Entry(edit_frame, textvariable=priceVar).grid(row=4, column=2)
             Button(edit_frame, text="Submit", command=newItem, bg="grey").grid(row=5, column=1)
 
         def removeItem():
-            clear_frame(edit_frame)
-
-            def deleteItem():
-                clear_frame(edit_frame)
-                valIds = idVar.get().split(",")
-                test = True
-                for vl in valIds:
-                    if vl.isdigit() is False or checkItemID(vl) is False:
-                        root.bell()
-                        messagebox.showerror("ERROR", "Invalid ID Number")
-                        removeItem()
-                        test = False
-                if test:
-                    text = changeItem(idVar.get(), None, None, False)
-                    Label(edit_frame, text=text).grid(row=1, column=1)
-
-            idVar = StringVar()
-            Label(edit_frame, text="Item ID's for removal (Seperate with ','): ").grid(row=1, column=1)
-            Entry(edit_frame, textvariable=idVar).grid(row=1, column=2)
-            Button(edit_frame, text="Submit", command=deleteItem, bg="grey").grid(row=2, column=1)
+            print("removing item")
 
         def editItemName():
+            newitemname = StringVar()
+            print("editing item name")
             clear_frame(edit_frame)
-            nameVar = StringVar()
+
+            def editname():
+                if checkName(newitemname.get(), 1):
+                    root.bell()
+                    messagebox.showerror("Error", f"Item by the name {newitemname.get()} already exists")
+                    editItemName()
+                else:
+                    text = changeItem(idVarrr.get(), newitemname.get(), None, True)
+                    clear_frame(edit_frame)
+                    listZeItems()
+                    Label(edit_frame, text=text).grid(row=2, column=1)
 
             def newName():
-                name = nameVar.get()
-                if checkName(name, 1) is False:  # that item does not exist
-                    text = changeItem(idVar.get(), name, None, True)
-                    Label(edit_frame, text=text).grid(row=1, column=1)
-                    listZeItems()
-                else:
+                if printItemInfo(idVarrr.get(), 2) == 'Error':
                     root.bell()
-                    messagebox.showerror("ERROR", "That item already exists")
-                    editItemName()
-
-            def getName():
-                idN = idVar.get()
-                if idN.isdigit() is False or checkItemID(id) is False:
-                    root.bell()
-                    messagebox.showerror("ERROR", "Invalid ID Number")
+                    messagebox.showerror("Error", "ID not valid")
                     editItemName()
                 else:
                     clear_frame(edit_frame)
-                    Label(edit_frame, text="New Item Name: ").grid(row=1, column=1)
-                    Entry(edit_frame, textvariable=nameVar).grid(row=1, column=2)
-                    Button(edit_frame, text="Submit", command=newName, bg="grey").grid(row=2, column=1)
+                    Label(edit_frame, text="New Item Name: ").grid(row=2, column=1)
+                    Entry(edit_frame, textvariable=newitemname).grid(row=2, column=2)
+                    Button(edit_frame, text="Submit", bg="grey", command=editname).grid(row=2, column=3)
 
-            idVar = StringVar()
-            Label(edit_frame, text="Item ID for Name Edit: ").grid(row=1, column=1)
-            Entry(edit_frame, textvariable=idVar).grid(row=1, column=2)
-            Button(edit_frame, text="Submit", command=getName, bg="grey").grid(row=2, column=1)
+            idVarrr = StringVar()
+            Label(edit_frame, text="Item ID for name edit: ").grid(row=2, column=1)
+            Entry(edit_frame, textvariable=idVarrr).grid(row=2, column=2)
+            Button(edit_frame, text="Submit", bg="grey", command=newName).grid(row=2, column=3)
 
         def editItemPrice():
-            priceVar = StringVar()
+            idVarrr = StringVar()
+
+            print("editing item price")
             clear_frame(edit_frame)
 
-            def newPrice():
-                price = priceVar.get()
-                print(f"price: {price}\npriceVar: {priceVar.get()}")
-                if price.isdigit():
-                    text = changeItem(id2Var.get(), None, priceVar.get(), True)
-                    Label(edit_frame, text=text).grid(row=1, column=1)
-                    listZeItems()
-                else:
-                    root.bell()
-                    messagebox.showerror("ERROR", "Cannot compound price into a valid number")
-                    editItemPrice()
+            def test():
+                print(idVarrr.get())
 
-            def getPrice():
-                idN = id2Var.get()
-                print(f"id: {idN}\nidVar: {id2Var.get()}")
-                if idN.isdigit() is False or checkItemID(idN) is False:
-                    root.bell()
-                    messagebox.showerror("ERROR", "Invalid ID Number")
-                    editItemPrice()
-                else:
-                    clear_frame(edit_frame)
-                    Label(edit_frame, text="New Item Price: ").grid(row=1, column=1)
-                    Entry(edit_frame, textvariable=priceVar).grid(row=1, column=2)
-                    Button(edit_frame, text="Submit", command=newPrice, bg="grey").grid(row=2, column=1)
-
-            id2Var = StringVar()
-            Label(edit_frame, text="Item ID for Price Edit: ").grid(row=1, column=1)
-            Entry(edit_frame, textvariable=id2Var).grid(row=1, column=2)
-            Button(edit_frame, text="Submit", command=getPrice, bg="grey").grid(row=2, column=1)
+            Label(edit_frame, text="Item ID for name edit: ").grid(row=2, column=1)
+            Entry(edit_frame, textvariable=idVarrr).grid(row=2, column=2)
+            Button(edit_frame, text="Submit", bg="grey", command=test).grid(row=2, column=3)
 
         def change_dropdown(*args):
             if ddVar.get() == "Add Item":
