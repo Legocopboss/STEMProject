@@ -1,22 +1,21 @@
 from tkinter import *
 
 from adminUI import adminUIDEF
+from customerLoginUI import customerLogin
 from functionLibrary import *
+from managerUI import ManagerUIFrame
 
 
-def LoginfirstFrame():
-    root = Tk()
+def LoginfirstFrame(root):
+    clear_root(root)
+
     root.title("Admin Login")
-    root.geometry("400x400")
-    root.resizable(True, True)
 
-    first_frame = Frame(root)
-    first_frame.pack(expand=1, fill=BOTH)
-    first_frame.grid_columnconfigure(1, weight=1)
+    first_frame = Frame(root, bg="green")
+    first_frame.pack(expand=1, fill=BOTH, side=TOP)
+    # first_frame.grid_columnconfigure(1, weight=1)
 
-    welcome_frame = Frame(root)
-    welcome_frame.pack(expand=1, fill=BOTH)
-    error_login_frame = Frame(root)
+    error_login_frame = Frame(root, bg="blue")
     error_login_frame.pack(expand=1, fill=BOTH)
 
     def Alogin():
@@ -29,13 +28,14 @@ def LoginfirstFrame():
         clear_frame(first_frame)
 
         adm, man = admCheckLogin(u, p)
-
+        print(adm + man)
         if man:
             if adm:
                 clear_frame(first_frame)
-                adminUIDEF()
+                adminUIDEF(root)
             else:
                 clear_frame(first_frame)
+                ManagerUIFrame(root)
                 # exec(open("./managerUI.py").read())
         else:
             backToCustLogin()
@@ -45,7 +45,11 @@ def LoginfirstFrame():
 
     def backToCustLogin():
         clear_frame(first_frame)
-        exec(open("./customerLoginUI.py").read())
+        customerLogin(root)
+
+    def gogogo():
+        clear_frame(first_frame)
+        adminUIDEF(root)
 
     usernameVar = StringVar(root)
     passwordVar = StringVar(root)
@@ -58,9 +62,9 @@ def LoginfirstFrame():
 
     Button(first_frame, text="Back To Customer Login", bg="pink", command=backToCustLogin).grid(row=0, column=0)
 
-    Button(first_frame, text="This is probably not secure", bg="blue", command=adminUIDEF).grid(row=7, column=0)
+    Button(first_frame, text="This is probably not secure", bg="blue", command=gogogo).grid(row=7, column=0)
 
-    root.mainloop()
+    #root.mainloop()
 
 
 if __name__ == "__customerLoginUI__":

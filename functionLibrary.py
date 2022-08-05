@@ -3,8 +3,16 @@ from tkinter import messagebox
 from database import *
 
 
-def clear_frame(frame):
+def clear_frame(frame, root=None):
+    # frame.configure(height=frame["height"])
     for widgets in frame.winfo_children():
+        widgets.destroy()
+    if root is not None:
+        root.geometry("")
+
+
+def clear_root(root):
+    for widgets in root.winfo_children():
         widgets.destroy()
 
 

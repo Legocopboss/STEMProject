@@ -1,13 +1,11 @@
 from tkinter import *
 
+from customerLoginUI import customerLogin
 from functionLibrary import *
 
 
-def ManagerUIFrame():
-    root = Tk()
+def ManagerUIFrame(root):
     root.title("Manager UI")
-    root.geometry("400x400")
-    root.resizable(True, True)
 
     first_frame = Frame(root)
     first_frame.pack(expand=1, fill=BOTH)
@@ -20,14 +18,14 @@ def ManagerUIFrame():
 
     def backToCustLogin():
         clear_frame(first_frame)
-        exec(open("./customerLoginUI.py").read())
+        customerLogin(root)
 
     Label(first_frame, text="Lol you have no permissions").grid(row=1, column=1)
     Label(first_frame, text="stupid manager").grid(row=2, column=1)
 
     Button(first_frame, text="Back To Customer Login", bg="pink", command=backToCustLogin).grid(row=0, column=0)
 
-    root.mainloop()
+    # root.mainloop()
 
 
 if __name__ == "__loginUI__":

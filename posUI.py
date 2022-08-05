@@ -1,10 +1,10 @@
 from tkinter import *
 
+from customerLoginUI import customerLogin
 from functionLibrary import *
 
 
-def posUIDEF(idnum):
-    root = Tk()
+def posUIDEF(idnum, root):
     root.title("Store UI")
     root.geometry("400x400")
 
@@ -45,7 +45,7 @@ def posUIDEF(idnum):
         newTransaction(idnum, purchases, -posUIDEF.currtotal)
         clear_frame(trans_frame)
         clear_frame(first_frame)
-        exec(open("./customerLoginUI.py").read())
+        customerLogin(root)
 
     posUIDEF.currtotal = 0.0
     currentTrans = []

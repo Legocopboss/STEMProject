@@ -1,26 +1,25 @@
 from tkinter import *
 
+from customerLoginUI import customerLogin
 from functionLibrary import *
 
 
 # from posUI import *
 
 
-def adminUIDEF():
-    root = Tk()
+def adminUIDEF(root):
+    clear_root(root)
     root.title("Admin UI")
-    root.geometry("500x400")
-    root.resizable(True, True)
 
-    first_frame = Frame(root)
-    first_frame.pack(expand=1, fill=BOTH)
-    list_frame = Frame(root)
+    first_frame = Frame(root, bg="purple", height=0)
+    first_frame.pack(expand=0, fill=BOTH)
+    first_frame.grid_propagate(1)
+    list_frame = Frame(root, bg="grey", height=0)
     list_frame.pack(expand=1, fill=BOTH, side=BOTTOM)
-    edit_user_frame_TOP = Frame(root)
+    edit_user_frame_TOP = Frame(root, bg="blue", height=0)
     edit_user_frame_TOP.pack(expand=1, fill=BOTH, side=TOP)
-    edit_frame = Frame(root)
+    edit_frame = Frame(root, bg="pink", height=0)
     edit_frame.pack(expand=1, fill=BOTH)
-
     '''
     def runButton(iN, cA):
         newButton(iN, cA)
@@ -87,7 +86,7 @@ def adminUIDEF():
 
     def editUser():
         accList()
-        options = {'Edit User Balance', 'Delete User', 'Edit User Name'}
+        options = {'Edit User Balance', 'Delete User', 'Edit User Name', 'Add User'}
         ddVar = StringVar(root)
         ddVar.set('Edit User Balance')
         popupMenu = OptionMenu(edit_user_frame_TOP, ddVar, *options)
@@ -109,11 +108,19 @@ def adminUIDEF():
             def validate():
                 testAmt = amt.get()
 
-                if testAmt.isdigit():
-                    editBalance()
+                if testAmt.__contains__("-"):
+                    testAmtADJ = testAmt.replace("-", "")
+                    if testAmtADJ.isdigit():
+                        editBalance()
+                    else:
+                        root.bell()
+                        amount()
                 else:
-                    root.bell()
-                    Label(edit_user_frame_TOP, text="Error Invalid Amount")
+                    if testAmt.isdigit():
+                        editBalance()
+                    else:
+                        root.bell()
+                        amount()
 
             def amount():
                 print(idVarB.get())
@@ -150,6 +157,34 @@ def adminUIDEF():
             Label(edit_frame, text="ID's for removal (separate with ,): ").grid(row=2, column=1)
             Entry(edit_frame, textvariable=idVar).grid(row=2, column=2)
             Button(edit_frame, text="Submit", bg="grey", command=removeUser).grid(row=2, column=3)
+
+        def addUserUI():
+            print("Adding user")
+            name = StringVar()
+            clear_frame(edit_frame)
+
+            def getname():
+                clear_frame(edit_frame)
+                if printInfo(idVar.get(), 1) == "Error":
+                    Label(edit_frame, text="New Persons Full Name (First Last): ").grid(row=2, column=1)
+                    Entry(edit_frame, textvariable=name).grid(row=2, column=2)
+                    Button(edit_frame, text="Submit", bg="grey", command=adduser).grid(row=2, column=3)
+                else:
+                    addUserUI()
+
+            def adduser():
+                if not findByName(name, 1):
+                    text = newPerson(idVar.get(), name.get())
+                    clear_frame(edit_frame)
+                    accList()
+                    Label(edit_frame, text=text).grid(row=2, column=1)
+                else:
+                    addUserUI()
+
+            idVar = StringVar()
+            Label(edit_frame, text="Scan ID or type new persons ID Number: ").grid(row=2, column=1)
+            Entry(edit_frame, textvariable=idVar).grid(row=2, column=2)
+            Button(edit_frame, text="Submit", bg="grey", command=getname).grid(row=2, column=3)
 
         def editUserName():
             newNameTxt = StringVar()
@@ -191,6 +226,8 @@ def adminUIDEF():
                 deleteUserUI()
             elif ddVar.get() == "Edit User Name":
                 editUserName()
+            elif ddVar.get() == "Add User":
+                addUserUI()
 
         ddVar.trace('w', change_dropdown)
 
@@ -220,6 +257,8 @@ def adminUIDEF():
 
         def addItem():
             priceVar = StringVar()
+            nameVar = StringVar()
+
             print("adding item")
             clear_frame(edit_frame)
 
@@ -228,11 +267,9 @@ def adminUIDEF():
                 pricehere = priceVar.get()
                 print(pricehere)
 
-            # nameVar = StringVar()
-
             Label(edit_frame, text="New Item: ", font='Helvetica 10 bold').grid(row=2, column=1)
-            # Label(edit_frame, text="Name: ").grid(row=3, column=1)
-            # Entry(edit_frame, textvariable=nameVar).grid(row=3, column=2)
+            Label(edit_frame, text="Name: ").grid(row=3, column=1)
+            Entry(edit_frame, textvariable=nameVar).grid(row=3, column=2)
             Label(edit_frame, text="Price: ").grid(row=4, column=1)
             Entry(edit_frame, textvariable=priceVar).grid(row=4, column=2)
             Button(edit_frame, text="Submit", command=newItem, bg="grey").grid(row=5, column=1)
@@ -303,7 +340,7 @@ def adminUIDEF():
 
     def backToCustLogin():
         clear_frame(first_frame)
-        exec(open("./customerLoginUI.py").read())
+        customerLogin(root)
 
     def firstFrame():
         Button(first_frame, text="Admin List", command=admList).grid(row=2, column=1)
@@ -318,7 +355,7 @@ def adminUIDEF():
 
     firstFrame()
 
-    root.mainloop()
+    # root.mainloop()
 
 
 if __name__ == "__loginUI__":
