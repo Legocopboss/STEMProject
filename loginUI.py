@@ -1,7 +1,6 @@
 from tkinter import *
 
 from adminUI import adminUIDEF
-from customerLoginUI import customerLogin
 from functionLibrary import *
 from managerUI import ManagerUIFrame
 
@@ -31,10 +30,10 @@ def LoginfirstFrame(root):
         print(adm + man)
         if man:
             if adm:
-                clear_frame(first_frame)
+                clear_frame(first_frame, True)
                 adminUIDEF(root)
             else:
-                clear_frame(first_frame)
+                clear_frame(first_frame, True)
                 ManagerUIFrame(root)
                 # exec(open("./managerUI.py").read())
         else:
@@ -45,6 +44,7 @@ def LoginfirstFrame(root):
 
     def backToCustLogin():
         clear_frame(first_frame)
+        from customerLoginUI import customerLogin
         customerLogin(root)
 
     def gogogo():

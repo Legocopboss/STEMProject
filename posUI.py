@@ -1,17 +1,24 @@
 from tkinter import *
 
-from customerLoginUI import customerLogin
 from functionLibrary import *
 
 
 def posUIDEF(idnum, root):
     root.title("Store UI")
-    root.geometry("400x400")
-
-    first_frame = Frame(root)
+    root.geometry("400x200")
+    welcome_frame = Frame(root, bg="pink", width=400, height=75)
+    welcome_frame.pack(side=TOP, expand=1, fill=BOTH)
+    first_frame = Frame(root, bg="purple")
     first_frame.pack(side=RIGHT, expand=1, fill=BOTH)
-    trans_frame = Frame(root, width=100, height=400)
+    trans_frame = Frame(root, width=100, height=400, bg="cyan")
     trans_frame.pack(side=LEFT, expand=1, fill=BOTH)
+
+    def backToLogin():
+        clear_frame(trans_frame, True)
+        clear_frame(first_frame, True)
+        clear_frame(welcome_frame, True)
+        from customerLoginUI import customerLogin
+        customerLogin(root)
 
     def removeFromTrans(item, price):
         currentTrans.remove([item, price])
@@ -29,8 +36,10 @@ def posUIDEF(idnum, root):
             t = t + 1
         Label(trans_frame, text=f"Total: {posUIDEF.currtotal}", font='Helvetica 10 bold').grid(row=t + 1, column=1)
         if posUIDEF.currtotal > 0:
+            root.geometry(f"400x{str(200 + (26 * t))}")
             Button(trans_frame, text="Confirm Purchase", font="Helvetica 8 bold", bg="lime",
                    command=confirmPurchase).grid(row=t + 2, column=1)
+        Button(trans_frame, text="Back", bg="pink", command=backToLogin).grid(row=t + 3, column=1)
 
     def addPurchase(item, price):
         currentTrans.append([item, price])
@@ -43,13 +52,20 @@ def posUIDEF(idnum, root):
         purchases = str(purchasesT).replace('\'', '')
         print(purchases)
         newTransaction(idnum, purchases, -posUIDEF.currtotal)
-        clear_frame(trans_frame)
-        clear_frame(first_frame)
-        customerLogin(root)
+        clear_frame(trans_frame, True)
+        clear_frame(first_frame, True)
+        clear_frame(welcome_frame)
+        Label(welcome_frame, text="Purchase Successful").pack()
+        Label(welcome_frame, text="Receipt: " + purchases).pack()
+        Label(welcome_frame, text="Total: " + str(posUIDEF.currtotal)).pack()
+        Button(welcome_frame, text="Back To Login", bg="pink", command=backToLogin).pack()
 
     posUIDEF.currtotal = 0.0
     currentTrans = []
     items = allItems()
+
+    Label(welcome_frame,
+          text=f"Welcome {printInfo(idnum, 2)}. You have a balance of {printInfo(idnum, 3)} Braden Bux ©").pack()
 
     x = 0
     for li in items:
@@ -59,8 +75,6 @@ def posUIDEF(idnum, root):
         x = x + 1
 
     updateTransaction()
-
-    root.mainloop()
 
 
 if __name__ == "__customerLoginUI__":

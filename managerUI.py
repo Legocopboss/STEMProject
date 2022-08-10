@@ -1,6 +1,5 @@
 from tkinter import *
 
-from customerLoginUI import customerLogin
 from functionLibrary import *
 
 
@@ -17,7 +16,8 @@ def ManagerUIFrame(root):
     error_login_frame.pack(expand=1, fill=BOTH)
 
     def backToCustLogin():
-        clear_frame(first_frame)
+        clear_frame(first_frame, True)
+        from customerLoginUI import customerLogin
         customerLogin(root)
 
     Label(first_frame, text="Lol you have no permissions").grid(row=1, column=1)
@@ -28,6 +28,5 @@ def ManagerUIFrame(root):
     # root.mainloop()
 
 
-if __name__ == "__loginUI__":
+if __name__ == "__adminUI__":
     ManagerUIFrame()
-# command=checkLogin()

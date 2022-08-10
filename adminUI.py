@@ -1,7 +1,7 @@
 from tkinter import *
 
-from customerLoginUI import customerLogin
 from functionLibrary import *
+from managerUI import ManagerUIFrame
 
 
 # from posUI import *
@@ -30,10 +30,10 @@ def adminUIDEF(root):
     '''
 
     def back():
-        clear_frame(list_frame)
-        clear_frame(edit_frame)
-        clear_frame(edit_user_frame_TOP)
-        firstFrame()
+        clear_frame(list_frame, True)
+        clear_frame(edit_frame, True)
+        clear_frame(edit_user_frame_TOP, True)
+        adminUIDEF(root)
 
     def titleLabel(tf):
         if tf == "adm":
@@ -263,9 +263,13 @@ def adminUIDEF(root):
             clear_frame(edit_frame)
 
             def newItem():
-                print("new item called")
+                clear_frame(edit_frame)
+                print("new item called " + nameVar.get())
                 pricehere = priceVar.get()
                 print(pricehere)
+                text = changeItem(None, nameVar.get(), priceVar.get(), False)
+                Label(edit_frame, text=text).grid(row=2, column=1)
+                listZeItems()
 
             Label(edit_frame, text="New Item: ", font='Helvetica 10 bold').grid(row=2, column=1)
             Label(edit_frame, text="Name: ").grid(row=3, column=1)
@@ -276,6 +280,22 @@ def adminUIDEF(root):
 
         def removeItem():
             print("removing item")
+
+            def itemRem():
+                if not checkItemID(idVarrr.get()):
+                    root.bell()
+                    messagebox.showerror("Error", f"Item by the id {idVarrr.get()} doesnt exist")
+                    removeItem()
+                else:
+                    text = changeItem(idVarrr.get(), None, None, False)
+                    clear_frame(edit_frame)
+                    listZeItems()
+                    Label(edit_frame, text=text).grid(row=2, column=1)
+
+            idVarrr = StringVar()
+            Label(edit_frame, text="Item ID for name edit: ").grid(row=2, column=1)
+            Entry(edit_frame, textvariable=idVarrr).grid(row=2, column=2)
+            Button(edit_frame, text="Submit", bg="grey", command=itemRem).grid(row=2, column=3)
 
         def editItemName():
             newitemname = StringVar()
@@ -335,11 +355,12 @@ def adminUIDEF(root):
         ddVar.trace('w', change_dropdown)
 
     def toManager():
-        clear_frame(first_frame)
-        # exec(open("./managerUI.py").read())
+        clear_frame(first_frame, True)
+        ManagerUIFrame(root)
 
     def backToCustLogin():
-        clear_frame(first_frame)
+        clear_frame(first_frame, True)
+        from customerLoginUI import customerLogin
         customerLogin(root)
 
     def firstFrame():

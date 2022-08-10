@@ -7,6 +7,7 @@ from posUI import posUIDEF
 
 def customerLogin(root):
     root.title("Customer Login")
+    root.geometry("400x400")
 
     first_frame = Frame(root, bg="red")
     first_frame.pack(expand=1, fill=BOTH)
@@ -25,6 +26,7 @@ def customerLogin(root):
             return
 
         clear_frame(first_frame)
+        clear_frame(error_login_frame)
 
         def newP():
             nameStr = inputStr.get()
@@ -48,17 +50,18 @@ def customerLogin(root):
             input_entry.focus()
             ConfirmButton = Button(error_login_frame, text="Confirm", bg="grey", command=newP).pack()
         else:
+            clear_frame(first_frame, True)
+            clear_frame(welcome_frame, True)
+            clear_frame(error_login_frame, True)
             posUIDEF(idNumber, root)
-            label = Label(welcome_frame,
-                          text=f"Welcome {printInfo(idNumber, 2)}. You have a balance of {printInfo(idNumber, 3)} Bollars").pack()
 
     def adminLogin():
-        clear_frame(first_frame)
+        clear_frame(first_frame, True)
         # root.destroy()
         LoginfirstFrame(root)
 
     def backToLogin():
-        clear_frame(welcome_frame)
+        clear_frame(welcome_frame, True)
         customerLogin(root)
 
     mystring = StringVar()

@@ -200,7 +200,7 @@ def changeItem(id, name, price, edit):  # leave the other as None for edit
             cursor.execute(f"""DELETE FROM itemsDB WHERE ID='{rr}';""")
             ct += 1
         connection.commit()
-        return f"Successfully removed '{ct}' users from database"
+        return f"Successfully removed '{ct}' items from database"
 
     connection.commit()
 
