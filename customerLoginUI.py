@@ -1,7 +1,5 @@
 from tkinter import *
 
-from profanity_check import predict
-
 from functionLibrary import *
 from loginUI import LoginfirstFrame
 from posUI import posUIDEF
