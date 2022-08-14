@@ -37,7 +37,7 @@ def customerLogin(root):
                 customerLogin(root)
             else:
                 checkNameSpace = nameStr.replace(" ", "", 1)
-                if checkNameSpace.__contains__(" ") or nameStr == "" or predict([nameStr]) == 1:
+                if checkNameSpace.__contains__(" ") or nameStr == "":
                     messagebox.showerror("Invald Name",
                                          "This name is invalid or contains foul language. Please try again")
                     customerLogin(root)
