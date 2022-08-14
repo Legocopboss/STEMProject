@@ -43,13 +43,23 @@ def customerLogin(root):
         result = checkLogin(idNumber)
         print(result)
         if not result:
+
+            messagebox.showerror("User not in database", f"User by ID Number of {idNumber} was not found in database. "
+                                                         f"Please contact an administrator to fix this issue")
+            backToLogin()
+            # Adds a new user to the database without admin approval. Maybe make it need an admin?
+            """
             error_label = Label(error_login_frame, text="You are not in our system. Lets add you!").pack()
             error_label_inst = Label(error_login_frame, text="Please Type Name (Ex: First Last): ").pack()
             input_entry = Entry(error_login_frame, textvariable=inputStr)
             input_entry.pack()
             input_entry.focus()
-            ConfirmButton = Button(error_login_frame, text="Confirm", bg="grey", command=newP).pack()
+            ConfirmButton = Button(error_login_frame, text="Confirm", bg="grey", command=newP)
+            ConfirmButton.pack()
+            root.bind('<Return>', lambda event=None: ConfirmButton.invoke())
+            """
         else:
+            root.unbind('<Return>')
             clear_frame(first_frame, True)
             clear_frame(welcome_frame, True)
             clear_frame(error_login_frame, True)
@@ -62,6 +72,8 @@ def customerLogin(root):
 
     def backToLogin():
         clear_frame(welcome_frame, True)
+        clear_frame(first_frame, True)
+        clear_frame(error_login_frame, True)
         customerLogin(root)
 
     mystring = StringVar()
@@ -71,7 +83,9 @@ def customerLogin(root):
     id_entry.pack()
     id_entry.focus()
     # root.bind("<Return>", login)
-    loginButton = Button(first_frame, text="Login", bg="grey", command=login).pack()
+    loginButton = Button(first_frame, text="Login", bg="grey", command=login)
+    loginButton.pack()
+    root.bind('<Return>', lambda event=None: loginButton.invoke())
 
     adminLoginButton = Button(first_frame, text="Admin Login", bg="pink", command=adminLogin)
     adminLoginButton.pack()
