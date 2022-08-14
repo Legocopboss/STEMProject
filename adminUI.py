@@ -84,6 +84,7 @@ def adminUIDEF(root):
         # Label(list_frame, text="Search Query: ")
         makeTable("trans")
 
+
     def editUser():
         accList()
         options = {'Edit User Balance', 'Delete User', 'Edit User Name', 'Add User'}
@@ -354,6 +355,30 @@ def adminUIDEF(root):
 
         ddVar.trace('w', change_dropdown)
 
+    def toggleVal(id):
+        text = toggleValue(id)
+        listSettings()
+
+    def listSettings():
+        clear_frame(list_frame)
+        sets = settings()
+        Label(list_frame, text="Setting", font='Helvetica 10 bold').grid(row=1, column=1)
+        Label(list_frame, text="Value", font='Helvetica 10 bold').grid(row=1, column=2)
+        Label(list_frame, text="ID", font='Helvetica 10 bold').grid(row=1, column=3)
+        x = 2
+        for li in sets:
+            Label(list_frame, text=li[0]).grid(row=x, column=1)
+            Button(list_frame, text=li[1], command=lambda it=li[2]: toggleVal(it), bg="grey").grid(row=x, column=2)
+            Label(list_frame, text=li[2]).grid(row=x, column=3)
+            x = x + 1
+        Button(list_frame, text="Back", bg="pink", command=back).grid(row=x + 1, column=1)
+
+    def admSettings():
+        clear_frame(first_frame)
+        clear_frame(list_frame)
+        Label(edit_frame, text="Select Value Button to toggle value").grid(row=1, column=1)
+        listSettings()
+
     def toManager():
         clear_frame(first_frame, True)
         ManagerUIFrame(root)
@@ -370,7 +395,7 @@ def adminUIDEF(root):
         Button(first_frame, text="Edit User", command=editUser).grid(row=3, column=1)
         Button(first_frame, text="Edit Admin/Manager", command=None).grid(row=3, column=2)  # THIS NEEDS DONE
         Button(first_frame, text="Add/Remove Merchandise", command=editMerch).grid(row=3, column=3)
-
+        Button(first_frame, text="Settings", command=admSettings).grid(row=4, column=2)
         Button(first_frame, text="To Manager UI", command=toManager).grid(row=4, column=1)
         Button(first_frame, text="Back To Customer Login", bg="pink", command=backToCustLogin).grid(row=0, column=1)
 

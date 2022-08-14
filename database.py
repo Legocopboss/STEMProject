@@ -236,3 +236,39 @@ def transactionLog():
     cursor.execute(f"""SELECT * FROM transactionsDB;""")
     transL = cursor.fetchall()
     return transL
+
+
+"""
+
+SETTINGS THINGS
+
+"""
+
+
+def settings():
+    cursor.execute(f"""SELECT * FROM settings;""")
+    settR = cursor.fetchall()
+    return settR
+
+
+def getSetting(setID):
+    cursor.execute(f"""SELECT * FROM settings WHERE ID = '{setID}';""")
+    settR = cursor.fetchall()
+    if not settR:
+        return "ID Does not exist"
+    else:
+
+        return (settR[0])[1]
+
+
+def toggleValue(id):
+    cursor.execute(f"""SELECT * FROM settings WHERE ID = '{id}';""")
+    setr = cursor.fetchall()
+    if not setr:
+        print("Error id doesnt exist")
+    else:
+        val = (setr[0])[1]
+        newVal = 1 if val == 0 else 0
+        cursor.execute(f"""UPDATE settings SET Value = {newVal} WHERE ID = '{id}';""")
+        connection.commit()
+        return f"Changed value of {(setr[0])[0]} to {(setr[0])[1]}"

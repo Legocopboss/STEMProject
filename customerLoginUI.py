@@ -1,5 +1,7 @@
 from tkinter import *
 
+from profanity_check import predict
+
 from functionLibrary import *
 from loginUI import LoginfirstFrame
 from posUI import posUIDEF
@@ -31,11 +33,22 @@ def customerLogin(root):
         def newP():
             nameStr = inputStr.get()
             print(nameStr)
-            newPerson(idNumber, nameStr)
-            clear_frame(error_login_frame)
-            label = Label(welcome_frame,
-                          text=f"Welcome {printInfo(idNumber, 2)}. You have a balance of {printInfo(idNumber, 3)} B").pack()
-            Button(welcome_frame, text="Return to login", bg="pink", command=backToLogin).pack()
+            if findByName(nameStr, 1):
+                messagebox.showerror("User already exists", f"A user by this name ({nameStr}) already exists. Please "
+                                                            f"contact an administrator to fix this issue")
+                customerLogin(root)
+            else:
+                checkNameSpace = nameStr.replace(" ", "", 1)
+                if checkNameSpace.__contains__(" ") or nameStr == "" or predict([nameStr]) == 1:
+                    messagebox.showerror("Invald Name",
+                                         "This name is invalid or contains foul language. Please try again")
+                    customerLogin(root)
+                else:
+                    newPerson(idNumber, nameStr)
+                    clear_frame(error_login_frame)
+                    label = Label(welcome_frame,
+                                  text=f"Welcome {printInfo(idNumber, 2)}. You have a balance of {printInfo(idNumber, 3)} B").pack()
+                    Button(welcome_frame, text="Return to login", bg="pink", command=backToLogin).pack()
 
         inputStr = StringVar()
 
@@ -44,20 +57,23 @@ def customerLogin(root):
         print(result)
         if not result:
 
-            messagebox.showerror("User not in database", f"User by ID Number of {idNumber} was not found in database. "
-                                                         f"Please contact an administrator to fix this issue")
-            backToLogin()
-            # Adds a new user to the database without admin approval. Maybe make it need an admin?
-            """
-            error_label = Label(error_login_frame, text="You are not in our system. Lets add you!").pack()
-            error_label_inst = Label(error_login_frame, text="Please Type Name (Ex: First Last): ").pack()
-            input_entry = Entry(error_login_frame, textvariable=inputStr)
-            input_entry.pack()
-            input_entry.focus()
-            ConfirmButton = Button(error_login_frame, text="Confirm", bg="grey", command=newP)
-            ConfirmButton.pack()
-            root.bind('<Return>', lambda event=None: ConfirmButton.invoke())
-            """
+            if getSetting(1) == 0:
+                messagebox.showerror("User not in database",
+                                     f"User by ID Number of {idNumber} was not found in database. "
+                                     f"Please contact an administrator to fix this issue")
+                backToLogin()
+            else:
+                # Adds a new user to the database without admin approval. Maybe make it need an admin?
+
+                error_label = Label(error_login_frame, text="You are not in our system. Lets add you!").pack()
+                error_label_inst = Label(error_login_frame, text="Please Type Name (Ex: First Last): ").pack()
+                input_entry = Entry(error_login_frame, textvariable=inputStr)
+                input_entry.pack()
+                input_entry.focus()
+                ConfirmButton = Button(error_login_frame, text="Confirm", bg="grey", command=newP)
+                ConfirmButton.pack()
+                root.bind('<Return>', lambda event=None: ConfirmButton.invoke())
+
         else:
             root.unbind('<Return>')
             clear_frame(first_frame, True)
