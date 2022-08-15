@@ -70,7 +70,7 @@ def checkLogin(idNumber):
 
 def newPerson(idNumber, name):
     print("adding new perosn to db")
-    balance = random.randrange(25, 751)
+    balance = random.randrange(3, 150)
     cursor.execute(f"""INSERT INTO accountsDB VALUES ('{idNumber}', '{name}', '{balance}');""")
     connection.commit()
 
