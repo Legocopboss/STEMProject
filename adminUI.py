@@ -7,7 +7,7 @@ from managerUI import ManagerUIFrame
 # from posUI import *
 
 
-def adminUIDEF(root):
+def adminUIDEF(root, uname=None):
     clear_root(root)
     root.title("Admin UI")
 
@@ -101,7 +101,7 @@ def adminUIDEF(root):
 
             def editBalance():
                 print("edit user balance funciton")
-                text = newTransaction_WithDepos(idVarB.get(), int(amt.get()))
+                text = newTransaction_WithDepos(idVarB.get(), int(amt.get()), uname)
                 clear_frame(edit_frame)
                 accList()
                 Label(edit_frame, text=text).grid(row=1, column=1)

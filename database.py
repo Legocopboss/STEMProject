@@ -205,27 +205,27 @@ def changeItem(id, name, price, edit):  # leave the other as None for edit
     connection.commit()
 
 
-def newTransaction(IDNumber, purchases, total):
+def newTransaction(IDNumber, purchases, total, uName=None):
     ct = datetime.datetime.now()
     print(ct)
     name = printInfo(IDNumber, 2)
     balance = printInfo(IDNumber, 3)
 
     cursor.execute(
-        f"""INSERT INTO transactionsDB VALUES ('none', '{name}', '{IDNumber}', '{purchases}', '{total}', '{(balance - total)}', '{ct}');""")
+        f"""INSERT INTO transactionsDB VALUES ('{uName}', '{name}', '{IDNumber}', '{purchases}', '{total}', '{(balance - total)}', '{ct}');""")
     connection.commit()
     cursor.execute(f"""UPDATE accountsDB SET Balance = Balance+{total} WHERE ID='{IDNumber}';""")
     connection.commit()
 
 
-def newTransaction_WithDepos(IDNumber, amount):
+def newTransaction_WithDepos(IDNumber, amount, uName=None):
     ct = datetime.datetime.now()
     print(ct)
     name = printInfo(IDNumber, 2)
     balance = printInfo(IDNumber, 3)
     # print(balance)
     cursor.execute(
-        f"""INSERT INTO transactionsDB VALUES ('none', '{name}', '{IDNumber}', 'WITHDRAWL/DEPOSIT', '{amount}', '{(balance + amount)}', '{ct}');""")
+        f"""INSERT INTO transactionsDB VALUES ('{uName}', '{name}', '{IDNumber}', 'WITHDRAWL/DEPOSIT', '{amount}', '{(balance + amount)}', '{ct}');""")
     connection.commit()
     cursor.execute(f"""UPDATE accountsDB SET Balance = Balance+{amount} WHERE ID='{IDNumber}';""")
     connection.commit()

@@ -31,7 +31,7 @@ def LoginfirstFrame(root):
         if man:
             if adm:
                 clear_frame(first_frame, True)
-                adminUIDEF(root)
+                adminUIDEF(root, u)
             else:
                 clear_frame(first_frame, True)
                 ManagerUIFrame(root)
