@@ -257,7 +257,6 @@ def getSetting(setID):
     if not settR:
         return "ID Does not exist"
     else:
-
         return (settR[0])[1]
 
 

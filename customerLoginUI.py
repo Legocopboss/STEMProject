@@ -80,6 +80,7 @@ def customerLogin(root):
             posUIDEF(idNumber, root)
 
     def adminLogin():
+        root.unbind('<Return>')
         clear_frame(first_frame, True)
         # root.destroy()
         LoginfirstFrame(root)

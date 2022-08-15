@@ -8,6 +8,13 @@ from managerUI import ManagerUIFrame
 
 
 def adminUIDEF(root, uname=None):
+    #
+
+    # REMOVE THIS
+    uname = "TEST ADMIN" if uname is None else None
+
+    #
+
     clear_root(root)
     root.title("Admin UI")
 

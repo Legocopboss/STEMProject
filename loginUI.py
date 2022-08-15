@@ -37,6 +37,7 @@ def LoginfirstFrame(root):
                 ManagerUIFrame(root)
                 # exec(open("./managerUI.py").read())
         else:
+            messagebox.showerror("Login Denied", "Incorrect Username or Password")
             backToCustLogin()
 
         # if u or p == "":
@@ -58,13 +59,16 @@ def LoginfirstFrame(root):
     Label(first_frame, text="Enter Password:").grid(row=3, column=1)
     Entry(first_frame, show="*", textvariable=passwordVar).grid(row=4, column=1)
 
-    Button(first_frame, text="Login", bg="grey", command=Alogin).grid(row=5, column=1)
+    loginBut = Button(first_frame, text="Login", bg="grey", command=Alogin)
+    loginBut.grid(row=5, column=1)
+    root.bind('<Return>', lambda event=None: loginBut.invoke())
 
     Button(first_frame, text="Back To Customer Login", bg="pink", command=backToCustLogin).grid(row=0, column=0)
 
-    Button(first_frame, text="This is probably not secure", bg="blue", command=gogogo).grid(row=7, column=0)
+    if getSetting(2):
+        Button(first_frame, text="This is probably not secure", bg="blue", command=gogogo).grid(row=7, column=0)
 
-    #root.mainloop()
+    # root.mainloop()
 
 
 if __name__ == "__customerLoginUI__":
