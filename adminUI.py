@@ -18,15 +18,29 @@ def adminUIDEF(root, uname=None):
     clear_root(root)
     root.title("Admin UI")
 
+
+
     first_frame = Frame(root, bg="purple", height=0)
     first_frame.pack(expand=0, fill=BOTH)
     first_frame.grid_propagate(1)
-    list_frame = Frame(root, bg="grey", height=0)
-    list_frame.pack(expand=1, fill=BOTH, side=BOTTOM)
     edit_user_frame_TOP = Frame(root, bg="blue", height=0)
     edit_user_frame_TOP.pack(expand=1, fill=BOTH, side=TOP)
     edit_frame = Frame(root, bg="pink", height=0)
     edit_frame.pack(expand=1, fill=BOTH)
+
+    canvas = Canvas(root, bg="yellow")
+    canvas.grid(row=0, column=0, sticky="news")
+                                                                                        #hey this stuff breaks everything
+    scrollbar = Scrollbar(root, orient="vertical", command=canvas.yview)
+    scrollbar.grid(row=0, column=1, sticky="ns")
+    canvas.configure(yscrollcommand=scrollbar.set)
+    canvas.config(scrollregion=canvas.bbox("all"))
+
+    list_frame = Frame(canvas, bg="grey", height=0)
+    #list_frame.pack(expand=1, fill=BOTH, side=BOTTOM)
+    canvas.create_window((0, 0), window=list_frame, anchor="nw")
+
+
     '''
     def runButton(iN, cA):
         newButton(iN, cA)
@@ -54,13 +68,12 @@ def adminUIDEF(root, uname=None):
             Label(list_frame, text="Name", font='Helvetica 10 bold').grid(row=1, column=2)
             Label(list_frame, text="Balance", font='Helvetica 10 bold').grid(row=1, column=3)
         if tf == "trans":
-            Label(list_frame, text="Employee User", font='Helvetica 10 bold').grid(row=1, column=1)
-            Label(list_frame, text="Customer Name", font='Helvetica 10 bold').grid(row=1, column=2)
-            Label(list_frame, text="Customer ID", font='Helvetica 10 bold').grid(row=1, column=3)
-            Label(list_frame, text="Purchases", font='Helvetica 10 bold').grid(row=1, column=4)
-            Label(list_frame, text="Total", font='Helvetica 10 bold').grid(row=1, column=5)
-            Label(list_frame, text="Remaining Balance", font='Helvetica 10 bold').grid(row=1, column=6)
-            Label(list_frame, text="Time of Purchase", font='Helvetica 10 bold').grid(row=1, column=7)
+            Label(list_frame, text="Customer Name", font='Helvetica 10 bold').grid(row=1, column=1)
+            Label(list_frame, text="Customer ID", font='Helvetica 10 bold').grid(row=1, column=2)
+            Label(list_frame, text="Purchases", font='Helvetica 10 bold').grid(row=1, column=3)
+            Label(list_frame, text="Total", font='Helvetica 10 bold').grid(row=1, column=4)
+            Label(list_frame, text="Remaining Balance", font='Helvetica 10 bold').grid(row=1, column=5)
+            Label(list_frame, text="Time of Purchase", font='Helvetica 10 bold').grid(row=1, column=6)
 
     def makeTable(tf):
         clear_frame(first_frame)
