@@ -28,17 +28,17 @@ def adminUIDEF(root, uname=None):
     edit_frame = Frame(root, bg="pink", height=0)
     edit_frame.pack(expand=1, fill=BOTH)
 
-    canvas = Canvas(root, bg="yellow")
-    canvas.grid(row=0, column=0, sticky="news")
+    #canvas = Canvas(root, bg="yellow")
+    #canvas.grid(row=0, column=0, sticky="news")
                                                                                         #hey this stuff breaks everything
-    scrollbar = Scrollbar(root, orient="vertical", command=canvas.yview)
-    scrollbar.grid(row=0, column=1, sticky="ns")
-    canvas.configure(yscrollcommand=scrollbar.set)
-    canvas.config(scrollregion=canvas.bbox("all"))
+    #scrollbar = Scrollbar(root, orient="vertical", command=canvas.yview)
+    #scrollbar.grid(row=0, column=1, sticky="ns")
+    #canvas.configure(yscrollcommand=scrollbar.set)
+    #canvas.config(scrollregion=canvas.bbox("all"))
 
-    list_frame = Frame(canvas, bg="grey", height=0)
-    #list_frame.pack(expand=1, fill=BOTH, side=BOTTOM)
-    canvas.create_window((0, 0), window=list_frame, anchor="nw")
+    list_frame = Frame(root, bg="grey")
+    list_frame.pack(expand=1, fill=BOTH, side=BOTTOM)
+    #canvas.create_window((0, 0), window=list_frame, anchor="nw")
 
 
     '''
