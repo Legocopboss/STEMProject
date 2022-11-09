@@ -5,7 +5,7 @@ from customerLoginUI import customerLogin
 exec(open("./database.py").read())
 
 root = Tk()
-root.geometry("400x400")
+root.geometry("500x500")
 root.resizable(True, True)
 
 customerLogin(root)

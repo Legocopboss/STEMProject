@@ -18,8 +18,6 @@ def adminUIDEF(root, uname=None):
     clear_root(root)
     root.title("Admin UI")
 
-
-
     first_frame = Frame(root, bg="purple", height=0)
     first_frame.pack(expand=0, fill=BOTH)
     first_frame.grid_propagate(1)
@@ -28,18 +26,33 @@ def adminUIDEF(root, uname=None):
     edit_frame = Frame(root, bg="pink", height=0)
     edit_frame.pack(expand=1, fill=BOTH)
 
-    #canvas = Canvas(root, bg="yellow")
-    #canvas.grid(row=0, column=0, sticky="news")
-                                                                                        #hey this stuff breaks everything
-    #scrollbar = Scrollbar(root, orient="vertical", command=canvas.yview)
-    #scrollbar.grid(row=0, column=1, sticky="ns")
-    #canvas.configure(yscrollcommand=scrollbar.set)
-    #canvas.config(scrollregion=canvas.bbox("all"))
+    # canvas = Canvas(root, bg="yellow")
+    # canvas.grid(row=0, column=0, sticky="news")
+    # hey this stuff breaks everything
+    # scrollbar = Scrollbar(root, orient="vertical", command=canvas.yview)
+    # scrollbar.grid(row=0, column=1, sticky="ns")
+    # canvas.configure(yscrollcommand=scrollbar.set)
+    # canvas.config(scrollregion=canvas.bbox("all"))
+    list_frame_OUTER = Frame(root)
+    list_frame_OUTER.pack()
 
-    list_frame = Frame(root, bg="grey")
-    list_frame.pack(expand=1, fill=BOTH, side=BOTTOM)
-    #canvas.create_window((0, 0), window=list_frame, anchor="nw")
+    list_frame_TITLE = Frame(list_frame_OUTER)
+    list_frame_TITLE.pack(expand=0, fill=BOTH, side=TOP)
 
+    list_frame_C = Canvas(list_frame_OUTER, bg="grey")
+
+    scrollbar = Scrollbar(list_frame_OUTER, orient='vertical', command=list_frame_C.yview)
+
+    list_frame = Frame(list_frame_C)
+
+    list_frame.bind('<Configure>',
+                    lambda e: list_frame_C.configure(
+                        scrollregion=list_frame_C.bbox("all"),
+                        width=list_frame.winfo_reqwidth()
+                    )
+                    )
+    list_frame_C.create_window((0, 0), window=list_frame, anchor=NW)
+    list_frame_C.configure(yscrollcommand=scrollbar.set)
 
     '''
     def runButton(iN, cA):
@@ -68,12 +81,14 @@ def adminUIDEF(root, uname=None):
             Label(list_frame, text="Name", font='Helvetica 10 bold').grid(row=1, column=2)
             Label(list_frame, text="Balance", font='Helvetica 10 bold').grid(row=1, column=3)
         if tf == "trans":
-            Label(list_frame, text="Customer Name", font='Helvetica 10 bold').grid(row=1, column=1)
-            Label(list_frame, text="Customer ID", font='Helvetica 10 bold').grid(row=1, column=2)
-            Label(list_frame, text="Purchases", font='Helvetica 10 bold').grid(row=1, column=3)
-            Label(list_frame, text="Total", font='Helvetica 10 bold').grid(row=1, column=4)
-            Label(list_frame, text="Remaining Balance", font='Helvetica 10 bold').grid(row=1, column=5)
-            Label(list_frame, text="Time of Purchase", font='Helvetica 10 bold').grid(row=1, column=6)
+            Label(list_frame_TITLE, text="Customer Name", font='Helvetica 10 bold').grid(row=1, column=1, sticky="news")
+            Label(list_frame_TITLE, text="Customer ID", font='Helvetica 10 bold').grid(row=1, column=2, sticky="nesw")
+            Label(list_frame_TITLE, text="Purchases", font='Helvetica 10 bold').grid(row=1, column=3, sticky="nesw")
+            Label(list_frame_TITLE, text="Total", font='Helvetica 10 bold').grid(row=1, column=4, sticky="nesw")
+            Label(list_frame_TITLE, text="Remaining Balance", font='Helvetica 10 bold').grid(row=1, column=5,
+                                                                                             sticky="nesw")
+            Label(list_frame_TITLE, text="Time of Purchase", font='Helvetica 10 bold').grid(row=1, column=6,
+                                                                                            sticky="nesw")
 
     def makeTable(tf):
         clear_frame(first_frame)
@@ -90,6 +105,10 @@ def adminUIDEF(root, uname=None):
             x += 1
             y = 1
         Button(list_frame, text="Back", bg="pink", command=back).grid(row=x + 1, column=1)
+
+        scrollbar.pack(side=RIGHT, fill=Y, expand=FALSE)
+        list_frame_C.pack(expand=1, fill=BOTH, side=LEFT)
+
         root.geometry("")
 
     def accList():
@@ -103,7 +122,6 @@ def adminUIDEF(root, uname=None):
     def transLog():
         # Label(list_frame, text="Search Query: ")
         makeTable("trans")
-
 
     def editUser():
         accList()
