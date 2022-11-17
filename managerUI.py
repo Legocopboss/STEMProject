@@ -23,7 +23,7 @@ def ManagerUIFrame(root):
     Label(first_frame, text="Lol you have no permissions").grid(row=1, column=1)
     Label(first_frame, text="stupid manager").grid(row=2, column=1)
 
-    Button(first_frame, text="Back To Customer Login", bg="pink", command=backToCustLogin).grid(row=0, column=0)
+    Button(first_frame, text="Back To Customer Login", bg="cyan", command=backToCustLogin).grid(row=0, column=0)
 
     # root.mainloop()
 

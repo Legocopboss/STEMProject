@@ -9,12 +9,12 @@ def customerLogin(root):
     root.title("Customer Login")
     root.geometry("400x400")
 
-    first_frame = Frame(root, bg="red")
+    first_frame = Frame(root, bg="grey")
     first_frame.pack(expand=1, fill=BOTH)
 
-    welcome_frame = Frame(root, bg="orange")
+    welcome_frame = Frame(root, bg="grey")
     welcome_frame.pack(expand=1, fill=BOTH)
-    error_login_frame = Frame(root, bg="yellow")
+    error_login_frame = Frame(root, bg="grey")
     error_login_frame.pack(expand=1, fill=BOTH)
 
     # exec(open("./database.py").read())
@@ -46,7 +46,7 @@ def customerLogin(root):
                     clear_frame(error_login_frame)
                     label = Label(welcome_frame,
                                   text=f"Welcome {printInfo(idNumber, 2)}. You have a balance of {printInfo(idNumber, 3)} B").pack()
-                    Button(welcome_frame, text="Return to login", bg="pink", command=backToLogin).pack()
+                    Button(welcome_frame, text="Return to login", bg="cyan", command=backToLogin).pack()
 
         inputStr = StringVar()
 
@@ -68,7 +68,7 @@ def customerLogin(root):
                 input_entry = Entry(error_login_frame, textvariable=inputStr)
                 input_entry.pack()
                 input_entry.focus()
-                ConfirmButton = Button(error_login_frame, text="Confirm", bg="grey", command=newP)
+                ConfirmButton = Button(error_login_frame, text="Confirm", bg="cyan", command=newP)
                 ConfirmButton.pack()
                 root.bind('<Return>', lambda event=None: ConfirmButton.invoke())
 
@@ -98,11 +98,11 @@ def customerLogin(root):
     id_entry.pack()
     id_entry.focus()
     # root.bind("<Return>", login)
-    loginButton = Button(first_frame, text="Login", bg="grey", command=login)
+    loginButton = Button(first_frame, text="Login", bg="cyan", command=login)
     loginButton.pack()
     root.bind('<Return>', lambda event=None: loginButton.invoke())
 
-    adminLoginButton = Button(first_frame, text="Admin Login", bg="pink", command=adminLogin)
+    adminLoginButton = Button(first_frame, text="Admin Login", bg="cyan", command=adminLogin)
     adminLoginButton.pack()
     adminLoginButton.place(bordermode=OUTSIDE, height=30, width=90, x=-0.1, y=-0.1)
     # would prefer for admin button to be botton right/left but fuck formatting

@@ -6,11 +6,11 @@ from functionLibrary import *
 def posUIDEF(idnum, root):
     root.title("Store UI")
     root.geometry("400x200")
-    welcome_frame = Frame(root, bg="pink", width=400, height=75)
+    welcome_frame = Frame(root, bg="grey", width=400, height=75)
     welcome_frame.pack(side=TOP, expand=1, fill=BOTH)
-    first_frame = Frame(root, bg="purple")
+    first_frame = Frame(root, bg="grey")
     first_frame.pack(side=RIGHT, expand=1, fill=BOTH)
-    trans_frame = Frame(root, width=100, height=400, bg="cyan")
+    trans_frame = Frame(root, width=100, height=400, bg="grey")
     trans_frame.pack(side=LEFT, expand=1, fill=BOTH)
 
     def backToLogin():
@@ -37,9 +37,9 @@ def posUIDEF(idnum, root):
         Label(trans_frame, text=f"Total: {posUIDEF.currtotal}", font='Helvetica 10 bold').grid(row=t + 1, column=1)
         if posUIDEF.currtotal > 0:
             root.geometry(f"400x{str(200 + (26 * t))}")
-            Button(trans_frame, text="Confirm Purchase", font="Helvetica 8 bold", bg="lime",
+            Button(trans_frame, text="Confirm Purchase", font="Helvetica 8 bold", bg="cyan",
                    command=confirmPurchase).grid(row=t + 2, column=1)
-        Button(trans_frame, text="Back", bg="pink", command=backToLogin).grid(row=t + 3, column=1)
+        Button(trans_frame, text="Back", bg="cyan", command=backToLogin).grid(row=t + 3, column=1)
 
     def addPurchase(item, price):
         currentTrans.append([item, price])
@@ -58,7 +58,7 @@ def posUIDEF(idnum, root):
         Label(welcome_frame, text="Purchase Successful").pack()
         Label(welcome_frame, text="Receipt: " + purchases).pack()
         Label(welcome_frame, text="Total: " + str(posUIDEF.currtotal)).pack()
-        Button(welcome_frame, text="Back To Login", bg="pink", command=backToLogin).pack()
+        Button(welcome_frame, text="Back To Login", bg="cyan", command=backToLogin).pack()
 
     posUIDEF.currtotal = 0.0
     currentTrans = []
