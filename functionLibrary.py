@@ -24,6 +24,14 @@ def check_if_int(number):
     return False
 
 
+def check_if_float(number):
+    try:
+        float(number)
+        return True
+    except:
+        return False
+
+
 def validateID(idnumber, root):
     if printInfo(idnumber, 1) != "Error":
         return True
@@ -31,3 +39,10 @@ def validateID(idnumber, root):
         root.bell()
         messagebox.showerror("ID ERROR", f"The ID number, {idnumber}, is invalid")
         return False
+
+
+def fillGrid(frame, start, end):
+    while start != end:
+        frame.grid_columnconfigure(start, weight=1)
+        frame.grid_rowconfigure(start, weight=1)
+        start = start + 1

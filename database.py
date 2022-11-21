@@ -93,6 +93,49 @@ def admFetchInfo(user, passw, opt):
         return switch.get(opt, res[0])
 
 
+def toggleAdminMan(AM, username):  # True for Admin False for Manager
+    cursor.execute(f"""SELECT * FROM adminAccsDB WHERE Username='{username}';""")
+    acc = cursor.fetchone()
+    admin = bool(int(acc[3]))
+    manager = bool(int(acc[4]))
+    if AM:
+        cursor.execute(f"""UPDATE adminAccsDB SET Admin = {not admin} WHERE Username='{username}';""")
+        if not admin and not manager:
+            connection.commit()
+            cursor.execute(f"""UPDATE adminAccsDB SET Manager = {not manager} WHERE Username='{username}';""")
+    else:
+        cursor.execute(f"""UPDATE adminAccsDB SET Manager = {not manager} WHERE Username='{username}';""")
+        if admin and manager:
+            connection.commit()
+            cursor.execute(f"""UPDATE adminAccsDB SET Admin = {not admin} WHERE Username='{username}';""")
+    connection.commit()
+
+
+def deleteAdminAccount(username):
+    cursor.execute(f"""DELETE FROM adminAccsDB WHERE Username='{username}';""")
+    connection.commit()
+
+
+def addAdminAccount(name, admin, manager):
+    splitName = str(name).split()
+    firstN = splitName[0].lower()
+    lastN = splitName[1].lower()
+    username = firstN[0] + lastN
+    password = firstN[0].upper() + "_@dminp@ssw0rd"
+
+    cursor.execute(f"""INSERT INTO adminAccsDB VALUES ('{name}', '{username}', '{password}', {admin}, {manager});""")
+    connection.commit()
+
+
+def adminCheckName(name):
+    cursor.execute(f"""SELECT * FROM adminAccsDB WHERE Name= '{name}'""")
+    res = cursor.fetchall()
+    if not res:
+        return False
+    else:
+        return True
+
+
 def admCheckLogin(user, passw):
     res = admFetchInfo(user, passw, 5)
     if not res:
@@ -205,6 +248,41 @@ def changeItem(id, name, price, edit):  # leave the other as None for edit
     connection.commit()
 
 
+def newItem_VersionInventory(name, price, invenID):
+    cursor.execute(f"""INSERT INTO `itemsDB_v2`(`Name`, `Price`, `InvenID`) VALUES ('{name}', '{price}', {invenID})""")
+    connection.commit()
+    return f"Successfully added {name} to POS with a price of {price}"
+
+
+def removeItem_VersionInventory(id):
+    cursor.execute(f"""SELECT * FROM itemsDB_v2 WHERE ID='{id}';""")
+    item = cursor.fetchone()
+    if not item:
+        return
+    else:
+        cursor.execute(f"""DELETE FROM itemsDB_v2 WHERE ID='{id}';""")
+        connection.commit()
+
+
+def checkIfInvenIsInPOS(Invenid):  # if exists return true
+    cursor.execute(f"""SELECT * FROM itemsDB_v2 WHERE InvenID='{Invenid}';""")
+    idY = cursor.fetchall()
+    if not idY:
+        return False
+    else:
+        return True
+
+
+def getItemFromInvenID(invenID):
+    cursor.execute(f"""SELECT * FROM itemsDB_v2 WHERE InvenID='{invenID}';""")
+    return cursor.fetchone()[0]
+
+
+def allItems_VersionInventory():
+    cursor.execute(f"""SELECT * FROM itemsDB_v2""")
+    return cursor.fetchall()
+
+
 def newTransaction(IDNumber, purchases, total):
     ct = datetime.datetime.now()
     print(ct)
@@ -236,6 +314,74 @@ def transactionLog():
     cursor.execute(f"""SELECT * FROM transactionsDB;""")
     transL = cursor.fetchall()
     return transL
+
+
+"""
+
+INVENTORY THINGS
+
+"""
+
+
+def viewInventory():
+    cursor.execute(f"""SELECT * FROM inventoryDB;""")
+    invenV = cursor.fetchall()
+    return invenV
+
+
+def addInven(amt, id):
+    cursor.execute(f"""UPDATE inventoryDB SET Stock = Stock+{amt} WHERE ID='{id}';""")
+    connection.commit()
+
+
+def getStock(id):
+    cursor.execute(f"""SELECT * FROM inventoryDB WHERE ID='{id}';""")
+    stock = cursor.fetchone()
+    return stock[2]
+
+
+def InventoryCHECK(id):
+    cursor.execute(f"""SELECT * FROM inventoryDB WHERE ID='{id}';""")
+    stock = cursor.fetchone()
+    if stock[2] <= 5:
+        removeItem_VersionInventory(id)
+
+
+def checkInvenForID(id):
+    cursor.execute(f"""SELECT * FROM inventoryDB WHERE ID = '{id}';""")
+    resN = cursor.fetchall()
+    if not resN:
+        return False
+    else:
+        return True
+
+
+def checkInvenForName(name, opt):
+    # opt 1=return true if they exist
+    # opt 2 = return all that have the name
+    cursor.execute(f"""SELECT * FROM inventoryDB WHERE Merchandise = '{name}';""")
+    resN = cursor.fetchall()
+    if opt == 1:
+        if not resN:
+            return False
+        else:
+            return True
+    elif opt == 2:
+        return resN
+    else:
+        return None
+
+
+def addNewToInventory(name, amt):
+    cursor.execute(f"""INSERT INTO inventoryDB(`Merchandise`, `Stock`) VALUES ('{name}',{amt});""")
+    connection.commit()
+    return f"Successfully added {name} into inventory with a starting value of {amt}"
+
+
+def removeFromInventory(id):
+    cursor.execute(f"""DELETE FROM inventoryDB WHERE ID='{id}';""")
+    connection.commit()
+    return f"Successfully removed item from inventory"
 
 
 """

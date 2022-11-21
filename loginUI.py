@@ -10,11 +10,11 @@ def LoginfirstFrame(root):
 
     root.title("Admin Login")
 
-    first_frame = Frame(root, bg="green")
+    first_frame = Frame(root, bg="grey")
     first_frame.pack(expand=1, fill=BOTH, side=TOP)
     # first_frame.grid_columnconfigure(1, weight=1)
 
-    error_login_frame = Frame(root, bg="blue")
+    error_login_frame = Frame(root, bg="white")
     error_login_frame.pack(expand=1, fill=BOTH)
 
     def Alogin():
@@ -34,8 +34,7 @@ def LoginfirstFrame(root):
                 adminUIDEF(root, u)
             else:
                 clear_frame(first_frame, True)
-                ManagerUIFrame(root)
-                # exec(open("./managerUI.py").read())
+                ManagerUIFrame(root, u)
         else:
             messagebox.showerror("Login Denied", "Incorrect Username or Password")
             backToCustLogin()
@@ -59,14 +58,14 @@ def LoginfirstFrame(root):
     Label(first_frame, text="Enter Password:").grid(row=3, column=1)
     Entry(first_frame, show="*", textvariable=passwordVar).grid(row=4, column=1)
 
-    loginBut = Button(first_frame, text="Login", bg="grey", command=Alogin)
+    loginBut = Button(first_frame, text="Login", bg="cyan", command=Alogin)
     loginBut.grid(row=5, column=1)
     root.bind('<Return>', lambda event=None: loginBut.invoke())
 
-    Button(first_frame, text="Back To Customer Login", bg="pink", command=backToCustLogin).grid(row=0, column=0)
+    Button(first_frame, text="Back To Customer Login", bg="cyan", command=backToCustLogin).grid(row=0, column=0)
 
     if getSetting(2):
-        Button(first_frame, text="This is probably not secure", bg="blue", command=gogogo).grid(row=7, column=0)
+        Button(first_frame, text="This is probably not secure", bg="cyan", command=gogogo).grid(row=7, column=0)
 
     # root.mainloop()
 
