@@ -23,7 +23,7 @@ def db_connection(host_name, user_name, user_password, db_name):
     return connection
 
 
-connection = db_connection("na02-db.cus.mc-panel.net", "db_441655", "edda40894a", "db_441655")
+connection = db_connection("na02-db.cus.mc-panel.net", "db_603873", "8286175fe5", "db_603873")
 cursor = connection.cursor()
 
 
